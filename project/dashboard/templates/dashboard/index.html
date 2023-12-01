@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<h2 class="text-center">My Arts</h2>
+
+<div class="container">
+    <div class="row center">
+        {% for item in items %}
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="card">
+                <img src="{{ item.image.url }}" class="card-img-top img-fluid" style="height: 20rem;" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <p class="card-text">{{ item.description|truncatewords:20 }}</p>
+                    <a href="{% url 'item:detail' item.id %}" class="btn btn-outline-primary">Подробнее</a>
+                    <p class="text-gray-500 text-end">{{item.created_at}}</p>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 and not forloop.last %}
+    </div>
+    <div class="row center">
+        {% endif %}
+        {% endfor %}
+    </div>
+
+
+
+</div>
+{% endblock %}

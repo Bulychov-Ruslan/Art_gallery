@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} {{item.name}} {% endblock %}
+
+{% block content %}
+
+<div class="container container1">
+    <section class="section">
+        <div class="card" style="width: 60%;">
+            <div class="card-body">
+                <div class="bg-image hover-overlay ripple rounded-0" data-mdb-ripple-color="light">
+                    <img src="{{ item.image.url }}" class="w-100"/>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                                <!--        LIKES-->
+                                {% if request.user.is_authenticated %}
+                                <div>
+                                    <form action="{% url 'item:like_item' %}" method="post">
+                                        {% csrf_token %}
+                                        {% if is_liked %}
+                                        <button type="submit" name="item_id" value="{{ item.id }}" class="btn btn-outline-dark"><i class="fas fa-thumbs-up text-primary"></i></button>
+                                        {% else %}
+                                         <button type="submit" name="item_id" value="{{ item.id }}" class="btn btn-outline-dark"><i class="fas fa-heart text-danger"></i></button>
+                                        {% endif %}
+                                    </form>
+                                    <p class="text-gray-500"><b>{{ total_likes }} Like</b></p>
+                                </div>
+                                {% else %}
+                                <button type="submit" name="item_id" value="{{ item.id }}" class="" disabled>Like</button>
+                                <p class="mt-4"><b>{{ total_likes }} Like</b></p>
+                                {% endif %}
+                        </div>
+                        <div>
+                            <a href="#" class="text-muted"> {{ comments.count }} comments </a>
+                        </div>
+                    </div>
+                    <!-- Reactions -->
+
+                    <!-- Buttons -->
+                    <br>
+                    <div class="border-top">
+                        <div class="bg-light rounded-3">
+                            <div>
+                                <div class="">
+                                    <div class="col-12"><small class="text-dark col-12">name: <strong>{{item.name}}</strong></small></div>
+                                   <div class="col-12"> <small class="text-dark"><strong>Description: </strong>{{ item.description }}</small></div>
+                                    <div class="col-12"><small class="text-dark"><strong>Created by: </strong><a href="{% url 'main:author' item.created_by.id %}" class="text-muted">{{item.created_by}}</a></small></div>
+                                    <div class="col-12"><small class="text-dark"><strong>Created date: </strong>{{item.created_at}}</small></div>
+
+                                    {% if request.user == item.created_by %}
+                                    <a href="{% url 'item:edit' item.id %}"
+                                       class="text-muted small ms-3 me-2"><strong>Edit</strong>
+                                    </a>
+                                    <a href="{% url 'item:delete' item.id %}"
+                                       class="text-muted small me-2"><strong>Delete</strong>
+                                    </a>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                        <br>
+<p class="h3 text-center">Comments</p>
+                    <!-- COMMENTS-->
+                    <div class="">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ comment_form.as_p }}
+                            {% if request.user.is_authenticated %}
+                            <input type="submit" value="Submit" class="btn btn-outline-success">
+                            {% else %}
+                            <input type="submit" value="Submit" class="btn btn-outline-success" disabled>
+                            {% endif %}
+                        </form>
+
+                        {% for comment in comments %}
+                        <blockquote class="blockquote">
+                            <p class="mb-0"><b>{{ comment.content }}</b></p>
+                            <footer class="blockquote-footer"><cite title="Source Title"><b>{{ comment.user.username }}</b></cite>
+                            </footer>
+                        </blockquote>
+
+                        <div class="container">
+                            {% for reply in comment.replies.all %}
+                            <blockquote class="blockquote">
+                                <p class="mb-0"><small>{{ reply.content }}</small></p>
+                                <footer class="blockquote-footer"><small><cite title="Source Title">{{
+                                    reply.user.username }}</cite></small>
+                                </footer>
+                            </blockquote>
+                            {% endfor %}
+                            <div class="form-group row">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                    {{ comment_form.as_p }}
+                                    {% if request.user.is_authenticated %}
+                                    <input type="submit" value="Submit" class="btn btn-outline-success">
+                                    {% else %}
+                                    <input type="submit" value="Submit" class="btn btn-outline-success" disabled>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+
+                        {% endfor %}
+                    </div>
+                    <!-- END-COMMENTS-->
+
+                </div>
+            </div>
+    </section>
+</div>
+{% endblock %}

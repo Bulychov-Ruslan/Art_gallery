@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Contacts {% endblock %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="container-fluid bg-grey">
+        <h2 class="text-center">CONTACT</h2>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 text-center">
+                <p>Contact us and we'll get back to you within 24 hours.</p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> Chicago, US</p>
+                <p><span class="glyphicon glyphicon-phone"></span> +00 1515151515</p>
+                <p><span class="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d46515.490634789254!2d76.93689870747066!3d43.225885365343494!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38836eda7804dd07%3A0x719365a568e97946!2sSatbayev%20University!5e0!3m2!1sru!2skz!4v1680585336850!5m2!1sru!2skz"
+                        width="600" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+    </div>
+<br>
+<br>
+{% endblock %}
